@@ -1,36 +1,36 @@
-import { User } from '../models/user.model';
+import { Admin,User} from '../models/user.model';
 import { IUser } from '../interfaces/user.interface';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
-class UserService {
+class AdminService {
   public register = async (body: IUser): Promise<IUser> => {
-    const existingUser = await User.findOne({ email: body.email });
-    const existingAdmin= await User.findOne({email: body.email});
+    const existingUser= await User.findOne({email: body.email});
+    const existingAdmin = await Admin.findOne({ email: body.email });
 
-    if (existingUser) {
+    if (existingAdmin || existingUser) {
       throw new Error('Email already exists');
     }
 
     const hashedPassword = await bcrypt.hash(body.password, 10);
     body.password = hashedPassword;
-    const data = await User.create(body);
+    const data = await Admin.create(body);
     return data;
   };
 
   public login = async (email: string, password: string, role: string): Promise<string> => {
-    const user = await User.findOne({ email });
+    const admin = await Admin.findOne({ email });
 
-    if (!user || user.role !== role) {
+    if (!admin || admin.role !== role) {
       throw new Error('Invalid credentials');
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, admin.password);
     if (!isPasswordValid) {
       throw new Error('Invalid credentials');
     }
-    const token = jwt.sign({ userId: user._id, role: user.role }, 'your-secret-key', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: admin._id, role: admin.role }, 'your-secret-key', { expiresIn: '1h' });
     return token;
   };
 }
 
-export default UserService;
+export default AdminService;

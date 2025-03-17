@@ -1,10 +1,10 @@
 import express, { IRouter } from 'express';
-import AuthController from '../controllers/user.controller';
+import AdminController from '../controllers/admin.controller';
 import { authMiddleware } from '../middlewares/auth.middleware';
 import { setRole } from '../middlewares/role.middleware';
 
 class AdminRoutes {
-  private AuthController = new AuthController();
+  private AdminController = new AdminController();
   private router = express.Router();
 
   constructor() {
@@ -12,11 +12,11 @@ class AdminRoutes {
   }
 
   private routes = () => {
-    this.router.post('/register', setRole('admin'), this.AuthController.register);
-    this.router.post('/login', setRole('admin'), this.AuthController.login);
+    this.router.post('/register', setRole('admin'), this.AdminController.register);
+    this.router.post('/login', this.AdminController.login);
 
     // Protected routes
-    this.router.get('/admin-only', authMiddleware(['admin']), this.AuthController.userProfile);
+    this.router.get('/admin-only', authMiddleware(['admin']), this.AdminController.adminProfile);
   };
 
   public getRoutes = (): IRouter => {
