@@ -18,10 +18,10 @@ class AdminService {
     return data;
   };
 
-  public login = async (email: string, password: string, role: string): Promise<string> => {
+  public login = async (email: string, password: string): Promise<string> => {
     const admin = await Admin.findOne({ email });
 
-    if (!admin || admin.role !== role) {
+    if (!admin) {
       throw new Error('Invalid credentials');
     }
     const isPasswordValid = await bcrypt.compare(password, admin.password);
@@ -29,6 +29,7 @@ class AdminService {
       throw new Error('Invalid credentials');
     }
     const token = jwt.sign({ userId: admin._id, role: admin.role }, 'your-secret-key', { expiresIn: '1h' });
+    console.log(token);
     return token;
   };
 }

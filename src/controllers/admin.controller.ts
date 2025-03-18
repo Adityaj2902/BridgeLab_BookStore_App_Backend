@@ -28,7 +28,7 @@ class AdminController {
     try {
       const { email, password } = req.body;
 
-      const token = await this.AdminService.login(email, password, 'admin');
+      const token = await this.AdminService.login(email, password);
       res.status(HttpStatus.OK).json({
         code: HttpStatus.OK,
         token: token,

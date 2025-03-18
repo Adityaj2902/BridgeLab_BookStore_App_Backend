@@ -28,7 +28,7 @@ class UserController {
     try {
       const { email, password } = req.body;
 
-      const token = await this.UserService.login(email, password, 'user');
+      const token = await this.UserService.login(email, password);
       res.status(HttpStatus.OK).json({
         code: HttpStatus.OK,
         token: token,

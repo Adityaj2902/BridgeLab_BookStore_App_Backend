@@ -18,10 +18,10 @@ class UserService {
     return data;
   };
 
-  public login = async (email: string, password: string, role: string): Promise<string> => {
+  public login = async (email: string, password: string): Promise<string> => {
     const user = await User.findOne({ email });
 
-    if (!user || user.role !== role) {
+    if (!user) {
       throw new Error('Invalid credentials');
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
