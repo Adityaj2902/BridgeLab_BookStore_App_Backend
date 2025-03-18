@@ -1,4 +1,4 @@
-import { Book } from './../models/book.model';
+import { Book } from '../models/book.model';
 
 class BookService {
   async createBook(data: any) {
@@ -6,8 +6,15 @@ class BookService {
     return await book.save();
   }
 
-  async getBooks() {
-    return await Book.find();
+  async getBooks(title?: string, author?: string) {
+    const query: any = {};
+    if (title) {
+      query.bookName = { $regex: title, $options: 'i' }; // Case-insensitive search
+    }
+    if (author) {
+      query.author = { $regex: author, $options: 'i' }; 
+    }
+    return await Book.find(query);
   }
 
   async getBookById(id: string) {

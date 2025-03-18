@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { bookService } from './../services/book.service';
+import { bookService } from '../services/book.service';
 
 class BookController {
   async createBook(req: Request, res: Response) {
@@ -13,7 +13,8 @@ class BookController {
 
   async getBooks(req: Request, res: Response) {
     try {
-      const books = await bookService.getBooks();
+      const { bookName, author } = req.query;
+      const books = await bookService.getBooks(bookName as string, author as string);
       res.status(200).json(books);
     } catch (error) {
       res.status(500).json({ message: error.message });

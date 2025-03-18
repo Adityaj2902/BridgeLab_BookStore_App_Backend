@@ -8,7 +8,7 @@ class UserService {
     const existingUser = await User.findOne({ email: body.email });
     const existingAdmin= await User.findOne({email: body.email});
 
-    if (existingUser) {
+    if (existingUser || existingAdmin) {
       throw new Error('Email already exists');
     }
 
