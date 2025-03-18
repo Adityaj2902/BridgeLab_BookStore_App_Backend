@@ -5,16 +5,23 @@ class BookService {
     const book = new Book(data);
     return await book.save();
   }
-
-  async getBooks(title?: string, author?: string) {
+  async getBooks(bookName?: string, author?: string, sortBy?: string) {
     const query: any = {};
-    if (title) {
-      query.bookName = { $regex: title, $options: 'i' }; // Case-insensitive search
+    if (bookName) {
+      query.bookName = { $regex: bookName, $options: 'i' }; // Case-insensitive search
     }
     if (author) {
-      query.author = { $regex: author, $options: 'i' }; 
+      query.author = { $regex: author, $options: 'i' }; // Case-insensitive search
     }
-    return await Book.find(query);
+
+    let sortOption = {};
+    if (sortBy === 'price_asc') {
+      sortOption = { price: 1 }; // Sort by price in ascending order
+    } else if (sortBy === 'price_desc') {
+      sortOption = { price: -1 }; // Sort by price in descending order
+    }
+
+    return await Book.find(query).sort(sortOption);
   }
 
   async getBookById(id: string) {
