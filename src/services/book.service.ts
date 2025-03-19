@@ -5,6 +5,7 @@ class BookService {
     const book = new Book(data);
     return await book.save();
   }
+
   async getBooks(bookName?: string, author?: string, sortBy?: string) {
     const query: any = {};
     if (bookName) {
@@ -19,6 +20,8 @@ class BookService {
       sortOption = { price: 1 }; // Sort by price in ascending order
     } else if (sortBy === 'price_desc') {
       sortOption = { price: -1 }; // Sort by price in descending order
+    } else if (sortBy === 'recent') {
+      sortOption = { createdAt: -1 }; // Sort by recently added (newest first)
     }
 
     return await Book.find(query).sort(sortOption);
