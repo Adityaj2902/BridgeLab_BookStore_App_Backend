@@ -13,14 +13,19 @@ class BookController {
 
   async getBooks(req: Request, res: Response) {
     try {
-      const { bookName, author, sortBy } = req.query;
-      const books = await bookService.getBooks(bookName as string, author as string, sortBy as string);
+      const { bookName, author, sortBy, page, limit } = req.query;
+      const books = await bookService.getBooks(
+        bookName as string,
+        author as string,
+        sortBy as string,
+        parseInt(page as string),
+        parseInt(limit as string)
+      );
       res.status(200).json(books);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   }
-
   async getBookById(req: Request, res: Response) {
     try {
       const book = await bookService.getBookById(req.params.id);

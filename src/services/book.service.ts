@@ -6,7 +6,7 @@ class BookService {
     return await book.save();
   }
 
-  async getBooks(bookName?: string, author?: string, sortBy?: string) {
+  async getBooks(bookName?: string, author?: string, sortBy?: string, page: number = 1, limit: number = 10) {
     const query: any = {};
     if (bookName) {
       query.bookName = { $regex: bookName, $options: 'i' }; // Case-insensitive search
@@ -24,7 +24,8 @@ class BookService {
       sortOption = { createdAt: -1 }; // Sort by recently added (newest first)
     }
 
-    return await Book.find(query).sort(sortOption);
+    const skip = (page - 1) * limit;
+    return await Book.find(query).sort(sortOption).skip(skip).limit(limit);
   }
 
   async getBookById(id: string) {

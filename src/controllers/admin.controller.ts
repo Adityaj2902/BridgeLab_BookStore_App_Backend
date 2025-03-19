@@ -20,7 +20,10 @@ class AdminController {
         message: 'Admin registered successfully'
       });
     } catch (error) {
-      next(error);
+      res.status(HttpStatus.BAD_REQUEST).json({
+        code: HttpStatus.BAD_REQUEST,
+        message: error.message
+      });
     }
   };
 
@@ -35,13 +38,23 @@ class AdminController {
         message: 'Admin logged in successfully'
       });
     } catch (error) {
-      next(error);
+      res.status(HttpStatus.UNAUTHORIZED).json({
+        code: HttpStatus.UNAUTHORIZED,
+        message: error.message
+      });
     }
   };
 
   public adminProfile = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
       const adminData = await Admin.findById(req.userId);
+      if (!adminData) {
+        res.status(HttpStatus.NOT_FOUND).json({
+          code: HttpStatus.NOT_FOUND,
+          message: 'Admin not found'
+        });
+        return;
+      }
       res.status(HttpStatus.OK).json({
         code: HttpStatus.OK,
         role: req.role,
@@ -49,7 +62,10 @@ class AdminController {
         adminData
       });
     } catch (error) {
-      next(error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        code: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message
+      });
     }
   };
 }
