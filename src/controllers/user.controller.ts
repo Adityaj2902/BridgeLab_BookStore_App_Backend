@@ -20,7 +20,10 @@ class UserController {
         message: 'User registered successfully'
       });
     } catch (error) {
-      next(error);
+      res.status(HttpStatus.BAD_REQUEST).json({
+        code: HttpStatus.BAD_REQUEST,
+        message: error.message
+      });
     }
   };
 
@@ -35,13 +38,22 @@ class UserController {
         message: 'User logged in successfully'
       });
     } catch (error) {
-      next(error);
+      res.status(HttpStatus.UNAUTHORIZED).json({
+        code: HttpStatus.UNAUTHORIZED,
+        message: error.message
+      });
     }
   };
 
   public userProfile = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData = await User.findById(req.userId);
+      if (!userData) {
+        res.status(HttpStatus.NOT_FOUND).json({
+          code: HttpStatus.NOT_FOUND,
+          message: 'User not found'
+        });
+      }
       res.status(HttpStatus.OK).json({
         code: HttpStatus.OK,
         role: req.role,
@@ -49,7 +61,10 @@ class UserController {
         userData
       });
     } catch (error) {
-      next(error);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        code: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: error.message
+      });
     }
   };
 }
