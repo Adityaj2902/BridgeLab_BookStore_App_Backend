@@ -4,6 +4,7 @@ const router = express.Router();
 import UserRoutes from './user.route';
 import AdminRoutes from './admin.route';
 import bookRoutes from './book.route';
+import CartRoutes from './cart.route';
 
 /**
  * Function contains Application routes
@@ -17,6 +18,7 @@ const routes = (): IRouter => {
   router.use('/users', new UserRoutes().getRoutes());
   router.use('/admin', new AdminRoutes().getRoutes());
   router.use('/books', bookRoutes);
+  router.use('/cart', new CartRoutes().getRoutes());
 
   return router;
 };

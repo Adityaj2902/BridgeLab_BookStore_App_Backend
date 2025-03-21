@@ -21,7 +21,7 @@ export const authMiddleware = (requiredRole: string[]) => {
       }
       bearerToken = bearerToken.split(' ')[1];
 
-      const decoded = jwt.verify(bearerToken, 'your-secret-key') as { userId: string; role: string };
+      const decoded = jwt.verify(bearerToken, process.env.MYJWTSECRET) as { userId: string; role: string };
 
       if (!requiredRole.includes(decoded.role)) {
         throw {

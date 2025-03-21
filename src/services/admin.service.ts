@@ -28,7 +28,7 @@ class AdminService {
     if (!isPasswordValid) {
       throw new Error('Invalid credentials');
     }
-    const token = jwt.sign({ userId: admin._id, role: admin.role }, 'your-secret-key', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: admin._id, role: admin.role }, process.env.MYJWTSECRET, { expiresIn: '1h' });
     console.log(token);
     return token;
   };
