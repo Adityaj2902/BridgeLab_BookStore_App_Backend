@@ -6,6 +6,7 @@ import AdminRoutes from './admin.route';
 import bookRoutes from './book.route';
 import CartRoutes from './cart.route';
 import WishlistRoutes from './wishlist.route';
+import CustomerRoutes from './../routes/customer.detail.route';
 
 /**
  * Function contains Application routes
@@ -21,6 +22,7 @@ const routes = (): IRouter => {
   router.use('/books', bookRoutes);
   router.use('/cart', new CartRoutes().getRoutes());
   router.use('/wishlist', new WishlistRoutes().getRoutes());
+  router.use('/customer', new CustomerRoutes().getRoutes());
 
   return router;
 };
