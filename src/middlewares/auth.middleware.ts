@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { User } from '../models/user.model';
 
 // Extend Request type to include userId and role
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request {
   userId?: string;
   role?: string;
 }
